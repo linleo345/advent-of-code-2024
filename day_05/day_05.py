@@ -34,21 +34,19 @@ def part_two():
     return sum_of_middles
 
 def _fix_violation_and_return(rules, line) -> List[str]:
-    
+    retries = 0
     while not _is_page_valid(rules, line):
-        new_list = []
 
+        new_list = []
         visited = set()
         i = 0
+
         for i in range(len(line)):
             if i in visited:
                 continue
-
             for j in range(i+1, len(line)):
-
                 if j in visited:
                     continue
-
                 first_page = line[i]
                 second_page = line[j]
                 if first_page in rules and second_page in rules[first_page]:
@@ -62,12 +60,15 @@ def _fix_violation_and_return(rules, line) -> List[str]:
             new_list.append(first_page)
 
         line = new_list
+        retries += 1
+        print("retrying attempt #" + str(retries))
         
 
     return new_list
             
 
 def _is_page_valid(rules, line):
+
     for i in range(len(line)):
         for j in range(i+1, len(line)):
             page_before = line[i]
